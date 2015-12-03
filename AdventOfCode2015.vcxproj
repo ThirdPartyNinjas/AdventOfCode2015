@@ -149,7 +149,7 @@
   <ItemGroup>
     <ClCompile Include="day1.c" />
     <ClCompile Include="day2.c" />
-    <ClCompile Include="day3.cpp" />
+    <ClCompile Include="day3.c" />
     <ClCompile Include="main.c" />
   </ItemGroup>
   <ItemGroup>

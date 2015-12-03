@@ -1,3 +1,6 @@
+// This was my original solution in C++ because I didn't want to write a hashset in C.
+// Leaving this here, but check out day3.c instead.
+
 #include <cstdio>
 #include <map>
 

@@ -10,7 +10,7 @@
     <ClCompile Include="day2.c">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="day3.cpp">
+    <ClCompile Include="day3.c">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
