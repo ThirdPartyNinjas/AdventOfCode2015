@@ -9,6 +9,12 @@ void d2p1()
 	int totalarea = 0;
 	FILE *file = fopen("data/d2_input.txt", "r");
 
+	if (!file)
+	{
+		printf("d2p1 error: Couldn't open d2_input.txt\n");
+		return;
+	}
+
 	while (fscanf(file, "%dx%dx%d\n", &l, &w, &h) == 3)
 	{
 		int area = 2 * l * w + 2 * w * h + 2 * h * l;
@@ -25,6 +31,12 @@ void d2p2()
 	int l, w, h;
 	int totalfeet = 0;
 	FILE *file = fopen("data/d2_input.txt", "r");
+
+	if (!file)
+	{
+		printf("d2p2 error: Couldn't open d2_input.txt\n");
+		return;
+	}
 
 	while (fscanf(file, "%dx%dx%d\n", &l, &w, &h) == 3)
 	{
