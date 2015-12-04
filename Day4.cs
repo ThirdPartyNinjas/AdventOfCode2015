@@ -13,7 +13,7 @@ namespace AdventOfCode2015_csharp
 			for (int i = 0; ; i++)
 			{
 				string result = MD5(input + i.ToString());
-				if (result.Substring(0, 5) == "00000")
+				if (result.StartsWith("00000"))
 				{
 					Console.WriteLine(string.Format("d4p1: The lowest number to get leading \"00000\" is: {0}", i));
 					return;
@@ -28,7 +28,7 @@ namespace AdventOfCode2015_csharp
 			for (int i = 0; ; i++)
 			{
 				string result = MD5(input + i.ToString());
-				if (result.Substring(0, 6) == "000000")
+				if (result.StartsWith("000000"))
 				{
 					Console.WriteLine(string.Format("d4p2: The lowest number to get leading \"000000\" is: {0}", i));
 					return;
