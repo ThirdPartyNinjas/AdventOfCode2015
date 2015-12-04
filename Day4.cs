@@ -9,33 +9,31 @@ namespace AdventOfCode2015_csharp
 		public static void Part1()
 		{
 			string input = @"bgvyzdsv";
-			int i = 1;
 
-			do
+			for (int i = 0; ; i++)
 			{
 				string result = MD5(input + i.ToString());
-				if(result.Substring(0, 5) == "00000")
-					break;
-				i++;
-			} while (true);
-
-			Console.WriteLine(string.Format("d4p1: The lowest number to get leading \"00000\" is: {0}", i));
-        }
+				if (result.Substring(0, 5) == "00000")
+				{
+					Console.WriteLine(string.Format("d4p1: The lowest number to get leading \"00000\" is: {0}", i));
+					return;
+				}
+			}
+		}
 
 		public static void Part2()
 		{
 			string input = @"bgvyzdsv";
-			int i = 1;
 
-			do
+			for (int i = 0; ; i++)
 			{
 				string result = MD5(input + i.ToString());
 				if (result.Substring(0, 6) == "000000")
-					break;
-				i++;
-			} while (true);
-
-			Console.WriteLine(string.Format("d4p2: The lowest number to get leading \"000000\" is: {0}", i));
+				{
+					Console.WriteLine(string.Format("d4p2: The lowest number to get leading \"000000\" is: {0}", i));
+					return;
+				}
+			}
 		}
 
 		// copied directly from stackoverflow
