@@ -15,6 +15,9 @@
 
 			// part 2 calls part 1
 			Day7.Part2();
+
+			Day8.Part1();
+			Day8.Part2();
 		}
 	}
 }
