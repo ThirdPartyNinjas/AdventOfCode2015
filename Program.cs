@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace AdventOfCode2015_csharp
 {
@@ -8,7 +9,61 @@ namespace AdventOfCode2015_csharp
     {
         private static void Main(string[] _)
         {
-            Day18();
+            Day19();
+        }
+
+        private static void Day19()
+        {
+            List<(string a, string b)> replacements = new List<(string a, string b)>();
+            string input;
+
+            using (var file = File.OpenText("day19_input.txt"))
+            {
+                string line;
+
+                while ((line = file.ReadLine()) != null)
+                {
+                    if(line == "")
+                        break;
+
+                    line = line.Replace("=> ", "");
+                    var strings = line.Split(' ');
+
+                    replacements.Add((strings[0], strings[1]));
+                }
+
+                input = file.ReadLine();
+            }
+
+            HashSet<string> replacedSet = new HashSet<string>();
+
+            foreach(var r in replacements)
+            {
+                int position = 0;
+                int index = 0;
+                while((index = input.IndexOf(r.a, position)) != -1)
+                {
+                    string replaced = input.Substring(0, index) + r.b + input.Substring(index + r.a.Length);
+                    replacedSet.Add(replaced);
+                    position = index + r.a.Length;
+                }
+            }
+
+            Console.WriteLine($"19a {replacedSet.Count}");
+
+            // Note: I didn't solve 19b, I tested some code I found online and it works.
+            // This one was beyond me. I need to revisit this later.
+
+            var str = "CRnSiRnCaPTiMgYCaPTiRnFArSiThFArCaSiThSiThPBCaCaSiRnSiRnTiTiMgArPBCaPMgYPTiRnFArFArCaSiRnBPMgArPRnCaPTiRnFArCaSiThCaCaFArPBCaCaPTiTiRnFArCaSiRnSiAlYSiThRnFArArCaSiRnBFArCaCaSiRnSiThCaCaCaFYCaPTiBCaSiThCaSiThPMgArSiRnCaPBFYCaCaFArCaCaCaCaSiThCaSiRnPRnFArPBSiThPRnFArSiRnMgArCaFYFArCaSiRnSiAlArTiTiTiTiTiTiTiRnPMgArPTiTiTiBSiRnSiAlArTiTiRnPMgArCaFYBPBPTiRnSiRnMgArSiThCaFArCaSiThFArPRnFArCaSiRnTiBSiThSiRnSiAlYCaFArPRnFArSiThCaFArCaCaSiThCaCaCaSiRnPRnCaFArFYPMgArCaPBCaPBSiRnFYPBCaFArCaSiAl";
+            Func<string, int> countStr = x =>
+            {
+                var count = 0;
+                for (var index = str.IndexOf(x); index >= 0; index = str.IndexOf(x, index + 1), ++count) { }
+                return count;
+            };
+
+            var num = str.Count(char.IsUpper) - countStr("Rn") - countStr("Ar") - 2 * countStr("Y") - 1;
+            Console.WriteLine($"19b {num}");
         }
 
         private static void Day18()
@@ -127,7 +182,6 @@ namespace AdventOfCode2015_csharp
             }
 
             Console.WriteLine($"18b {totalLightsOn}");
-
         }
 
         private static void Day17()
