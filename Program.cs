@@ -29,7 +29,64 @@ namespace AdventOfCode2015_csharp
             //Day10.Part1();
             //Day10.Part2();
 
-            Day16();
+            Day17();
+        }
+
+        private static void Day17()
+        {
+            List<int> containers = new List<int>();
+            Dictionary<int, int> combinationCounts = new Dictionary<int, int>();
+
+            int CombinationCount(List<int> combination, int target)
+            {
+                int total = 0;
+                foreach(var c in combination)
+                {
+                    total += containers[c];
+                }
+
+                if (total == target)
+                {
+                    if (!combinationCounts.ContainsKey(combination.Count))
+                        combinationCounts[combination.Count] = 1;
+                    else
+                        combinationCounts[combination.Count]++;
+                    return 1;
+                }
+
+                total = 0;
+                int start = 0;
+                if (combination.Count > 0)
+                    start = combination[combination.Count - 1] + 1;
+
+                for (int i = start; i< containers.Count; i++)
+                {
+                    List<int> newCombination = new List<int>(combination);
+                    newCombination.Add(i);
+                    total += CombinationCount(newCombination, target);
+                }
+                return total;
+            }
+
+            using (var file = File.OpenText("day17_input.txt"))
+            {
+                string line;
+                while ((line = file.ReadLine()) != null)
+                {
+                    containers.Add(int.Parse(line));
+                }
+            }
+
+            int result = CombinationCount(new List<int>() { }, 150);
+            Console.WriteLine($"17a {result}");
+
+            int minimumUsed = int.MaxValue;
+            foreach(var used in combinationCounts.Keys)
+            {
+                if (used < minimumUsed)
+                    minimumUsed = used;
+            }
+            Console.WriteLine($"17b {combinationCounts[minimumUsed]}");
         }
 
         class Sue
