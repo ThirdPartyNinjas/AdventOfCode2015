@@ -4,32 +4,130 @@ using System.IO;
 
 namespace AdventOfCode2015_csharp
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] _)
+        private static void Main(string[] _)
         {
-            //Day4.Part1();
-            //Day4.Part2();
+            Day18();
+        }
 
-            //Day5.Part1();
-            //Day5.Part2();
+        private static void Day18()
+        {
+            bool[,] input = new bool[100, 100];
+            bool[,] lights = new bool[100, 100];
+            bool[,] nextLights = new bool[100, 100];
 
-            //Day6.Part1();
-            //Day6.Part2();
+            int NeighborCount(bool[,] grid, int x, int y)
+            {
+                int total = 0;
+                total += (x == 0) ? 0 : (grid[y, x - 1] ? 1 : 0);
+                total += (x == 99) ? 0 : (grid[y, x + 1] ? 1 : 0);
+                total += (y == 0) ? 0 : (grid[y - 1, x] ? 1 : 0);
+                total += (y == 99) ? 0 : (grid[y + 1, x] ? 1 : 0);
+                total += (x == 0 || y == 0) ? 0 : (grid[y - 1, x - 1] ? 1 : 0);
+                total += (x == 99 || y == 0) ? 0 : (grid[y - 1, x + 1] ? 1 : 0);
+                total += (x == 99 || y == 99) ? 0 : (grid[y + 1, x + 1] ? 1 : 0);
+                total += (x == 0 || y == 99) ? 0 : (grid[y + 1, x - 1] ? 1 : 0);
+                return total;
+            }
 
-            //// part 2 calls part 1
-            //Day7.Part2();
+            using (var file = File.OpenText("day18_input.txt"))
+            {
+                string line;
+                int y = 0;
+                while ((line = file.ReadLine()) != null)
+                {
+                    for (int x = 0; x < 100; x++)
+                    {
+                        if (line[x] == '.')
+                        {
+                            input[y, x] = false;
+                        }
+                        else if (line[x] == '#')
+                        {
+                            input[y, x] = true;
+                        }
+                    }
+                    y++;
+                }
+            }
 
-            //Day8.Part1();
-            //Day8.Part2();
+            Array.Copy(input, 0, lights, 0, 100 * 100);
 
-            //Day9.Part1();
-            //Day9.Part2();
+            for (int i = 0; i < 100; i++)
+            {
+                for (int y = 0; y < 100; y++)
+                {
+                    for (int x = 0; x < 100; x++)
+                    {
+                        var neighborCount = NeighborCount(lights, x, y);
+                        if (lights[y, x])
+                        {
+                            nextLights[y, x] = (neighborCount == 2 || neighborCount == 3);
+                        }
+                        else
+                        {
+                            nextLights[y, x] = neighborCount == 3;
+                        }
+                    }
+                }
 
-            //Day10.Part1();
-            //Day10.Part2();
+                bool[,] temp = lights;
+                lights = nextLights;
+                nextLights = temp;
+            }
 
-            Day17();
+            int totalLightsOn = 0;
+            for (int y = 0; y < 100; y++)
+            {
+                for (int x = 0; x < 100; x++)
+                {
+                    if (lights[y, x])
+                        totalLightsOn++;
+                }
+            }
+
+            Console.WriteLine($"18a {totalLightsOn}");
+
+            Array.Copy(input, 0, lights, 0, 100 * 100);
+            lights[0, 0] = lights[99, 0] = lights[0, 99] = lights[99, 99] = true;
+
+            for (int i = 0; i < 100; i++)
+            {
+                for (int y = 0; y < 100; y++)
+                {
+                    for (int x = 0; x < 100; x++)
+                    {
+                        var neighborCount = NeighborCount(lights, x, y);
+                        if (lights[y, x])
+                        {
+                            nextLights[y, x] = (neighborCount == 2 || neighborCount == 3);
+                        }
+                        else
+                        {
+                            nextLights[y, x] = neighborCount == 3;
+                        }
+                    }
+                }
+
+                bool[,] temp = lights;
+                lights = nextLights;
+                nextLights = temp;
+                lights[0, 0] = lights[99, 0] = lights[0, 99] = lights[99, 99] = true;
+            }
+
+            totalLightsOn = 0;
+            for (int y = 0; y < 100; y++)
+            {
+                for (int x = 0; x < 100; x++)
+                {
+                    if (lights[y, x])
+                        totalLightsOn++;
+                }
+            }
+
+            Console.WriteLine($"18b {totalLightsOn}");
+
         }
 
         private static void Day17()
@@ -40,7 +138,7 @@ namespace AdventOfCode2015_csharp
             int CombinationCount(List<int> combination, int target)
             {
                 int total = 0;
-                foreach(var c in combination)
+                foreach (var c in combination)
                 {
                     total += containers[c];
                 }
@@ -59,7 +157,7 @@ namespace AdventOfCode2015_csharp
                 if (combination.Count > 0)
                     start = combination[combination.Count - 1] + 1;
 
-                for (int i = start; i< containers.Count; i++)
+                for (int i = start; i < containers.Count; i++)
                 {
                     List<int> newCombination = new List<int>(combination);
                     newCombination.Add(i);
@@ -81,7 +179,7 @@ namespace AdventOfCode2015_csharp
             Console.WriteLine($"17a {result}");
 
             int minimumUsed = int.MaxValue;
-            foreach(var used in combinationCounts.Keys)
+            foreach (var used in combinationCounts.Keys)
             {
                 if (used < minimumUsed)
                     minimumUsed = used;
@@ -89,7 +187,7 @@ namespace AdventOfCode2015_csharp
             Console.WriteLine($"17b {combinationCounts[minimumUsed]}");
         }
 
-        class Sue
+        private class Sue
         {
             public int Number { get; set; } = 0;
             public int Children { get; set; } = -1;
@@ -155,7 +253,7 @@ namespace AdventOfCode2015_csharp
                 Perfumes = 1,
             };
 
-            foreach(var sue in sues)
+            foreach (var sue in sues)
             {
                 if (sue.Children != -1 && sue.Children != input.Children)
                     continue;
